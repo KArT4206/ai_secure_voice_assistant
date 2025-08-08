@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+  <title>AI Secure Voice Assistant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    section {
+      margin-bottom: 30px;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1em;
+      color: green;
+    }
+    #error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎙️ AI Secure Voice Assistant</h1>
+    <a href="/login">Login/Register</a>
+  <!-- 🔊 Audio Upload & Transcription -->
+  <section>
+    <h2>1️⃣ Transcribe Audio</h2>
+    <form id="uploadForm">
+      <input type="file" id="audioFile" name="audio" accept="audio/*" required /><br />
+      <button type="submit">Upload & Transcribe</button>
+    </form>
+  </section>
+
+  <!-- ⌨️ Keystroke Authentication -->
+  <section>
+    <h2>2️⃣ Keystroke Authentication</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="text" id="pattern" placeholder="Keystroke Pattern" />
+    <button onclick="keystrokeAuth()">Verify</button>
+  </section>
+
+  <!-- 💬 Sentiment Analysis -->
+  <section>
+    <h2>3️⃣ Sentiment Analysis</h2>
+    <textarea id="sentimentText" rows="3" placeholder="Enter text for sentiment analysis"></textarea>
+    <button onclick="analyzeSentiment()">Analyze Sentiment</button>
+  </section>
+
+  <!-- 🎯 Intent Classification -->
+  <section>
+    <h2>4️⃣ Intent Classification</h2>
+    <textarea id="intentText" rows="3" placeholder="Enter text for intent detection"></textarea>
+    <button onclick="classifyIntent()">Classify Intent</button>
+  </section>
+
+  <!-- 📝 Summarization -->
+  <section>
+    <h2>5️⃣ Text Summarization</h2>
+    <textarea id="summaryText" rows="4" placeholder="Paste text to summarize"></textarea>
+    <button onclick="summarizeText()">Summarize</button>
+  </section>
+
+  <!-- 🌍 Set Language -->
+  <section>
+    <h2>6️⃣ Set Preferred Language</h2>
+    <input type="text" id="langCode" placeholder="Language code (e.g., en, fr, hi)" />
+    <button onclick="setLanguage()">Set Language</button>
+  </section>
+
+  <div id="result"></div>
+  <div id="error"></div>
+</body>
+</html>
