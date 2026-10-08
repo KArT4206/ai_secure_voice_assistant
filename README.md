@@ -1,97 +1,33 @@
+# AI Secure Voice Assistant (source)
 
-# AI Secure Voice Assistant with Keystroke Dynamics Authentication
+Private source for the voice assistant with keystroke-dynamics login. Public write-up with screenshots and explanation: `ai_secure_voice_assistant`.
 
-## Overview
-This project is an **AI-powered voice assistant** with integrated **Keystroke Dynamics Authentication** for secure login and registration. It combines advanced NLP, speech recognition, sentiment analysis, intent classification, and summarization, all while ensuring security through keystroke-based biometric verification.
+## Layout
+| Path | Purpose |
+|---|---|
+| `backend/app.py` | FastAPI app: `/`, `/login/` (pages), `POST /transcribe/`, `/nlp/sentiment/`, `/nlp/summarize/`, `/ai/intent/`, `/register/`, `/login/`. |
+| `backend/speech_processing/transcribe.py` | Whisper `base` speech-to-text (pydub converts any upload to WAV). |
+| `backend/nlp_modules/` | `sentiment_analysis.py` (TextBlob polarity), `summarizer.py` (DistilBART). |
+| `ai_brain/intent_classifier.py` | TF-IDF + logistic regression intent model (`models/intent_*.pkl/.pt`); falls back to a 5-intent dummy model. |
+| `backend/auth/` | `train_auth_model.py` (register, trains a Gaussian HMM), `verify_user.py` and `utils.py` (score a typed pattern), `hmm_model.py`. |
+| `backend/audio_analysis/` | Emotion, keyword spotting, noise reduction, diarization and voice-cloning helpers (not wired into the API yet). |
+| `frontend/` | `index.html`, `login.html`, `script.js`, `style.css`, plus Vue components (`src/`) for a future UI. |
+| `run.sh` | Convenience launcher for backend and Vue front end. |
 
-## Features
-- **User Registration with Keystroke Biometrics**
-  - Capture username, password, and keystroke patterns during registration.
-- **User Login with Keystroke Verification**
-  - Authenticate users based on username, password, and typing rhythm.
-- **Speech-to-Text Transcription**
-  - Convert voice input into text.
-- **Sentiment Analysis**
-  - Determine the sentiment (positive, negative, neutral) of the input text.
-- **Intent Classification**
-  - Identify the purpose of the user's query.
-- **Text Summarization**
-  - Summarize long pieces of text into concise versions.
-- **Language Setting**
-  - Switch between supported languages for AI processing.
-
-## Project Structure
-```
-project/
-│
-├── backend/
-│   ├── auth/                # Keystroke authentication logic
-│   ├── nlp_modules/         # NLP-related modules
-│   ├── speech_processing/   # Speech-to-text conversion
-│   └── ...
-│
-├── frontend/
-│   ├── index.html           # Main interface
-│   ├── login.html           # Login page
-│   ├── register.html        # Registration page
-│   └── assets/              # CSS, JS, images
-│
-├── app.py                   # Main FastAPI application
-└── requirements.txt         # Python dependencies
-```
-
-## Installation
-1. **Clone the repository**
+## Run
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt          # heavy: whisper, torch, transformers, speechbrain, TTS
+brew install ffmpeg                      # needed by pydub / whisper
+uvicorn backend.app:app --reload         # run from the repo root; open http://127.0.0.1:8000
 ```
 
-2. **Create a virtual environment**
-```bash
-python -m venv venv
-source venv/bin/activate   # On Windows use: venv\Scripts\activate
-```
+## Notes and known gaps
+- `frontend/script.js` calls `/auth/keystroke/` and `/set_language/`, which `backend/app.py` does not define yet.
+- Credentials are saved as plain JSON in `backend/auth/model/<user>_cred.json`; hash passwords (bcrypt/argon2) before real use.
+- The HMM thresholds (`score > -50`) are simple and were not tuned; the HMM library warns when a pattern has fewer samples than model parameters.
+- Pre-trained models live in `models/`; compiled `__pycache__` files are no longer tracked.
 
-3. **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
-
-4. **Run the FastAPI server**
-```bash
-uvicorn app:app --reload
-```
-
-5. **Open the application**
-```
-Visit http://127.0.0.1:8000 in your browser.
-```
-
-## How It Works
-1. **Registration**: Users enter their username and password, and their typing rhythm is recorded and stored securely.
-2. **Login**: The system verifies the username, password, and the keystroke pattern before granting access.
-3. **Voice Assistant**: Once logged in, users can:
-   - Speak to the assistant for transcription.
-   - Analyze the sentiment of text.
-   - Classify the intent of queries.
-   - Summarize lengthy text.
-   - Change processing language.
-
-## Requirements
-- Python 3.8+
-- FastAPI
-- Uvicorn
-- Dependencies listed in `requirements.txt`
-
-## Security Notes
-- Keystroke data is stored securely and never shared.
-- Passwords should be hashed before storage.
-
-## Developed by
-Karthik B
-
-Sahana 
-
-Priyanka 
-
+## Screenshots
+![Dashboard](docs/images/dashboard.png)
+![Module demo](docs/images/module-demo.png)
