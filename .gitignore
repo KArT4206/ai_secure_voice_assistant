@@ -1,5 +1,0 @@
-__pycache__/
-*.pyc
-backend/auth/model/
-users_data/
-venv/
