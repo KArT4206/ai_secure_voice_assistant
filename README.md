@@ -1,5 +1,8 @@
 # AI Secure Voice Assistant with Keystroke-Dynamics Login
 
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
+![Last commit](https://img.shields.io/github/last-commit/KArT4206/ai_secure_voice_assistant)
+
 A privacy-focused, voice-and-text assistant that protects its login with **how you type**, not only what you type. After registering a username, password and typing rhythm, you can transcribe speech, analyse sentiment, detect the intent of a request and summarise long text, all through a simple web dashboard served by a FastAPI backend.
 
 > This repository documents the project (description, design, screenshots). The source code lives in a private repository, `ai_secure_voice_assistant-code`.
